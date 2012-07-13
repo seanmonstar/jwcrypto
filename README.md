@@ -67,10 +67,14 @@ Basic API
         // serialize the public key
         console.log(keypair.publicKey.toString());
 
+        // serialize the public key to a version of the data format
+        console.log(keypair.publicKey.toString({version: '2012.08.15'}));
+
         // just the JSON object to embed in another structure
         console.log(JSON.stringify({stuff: keypair.publicKey.toJSONObject()}));
 
         // create and sign a JWS
+        // notice how loading the pubkey doesn't require a version, that is auto-detected
         var payload = {principal: {email: 'some@dude.domain'},
                        pubkey: jwcrypto.loadPublicKey(publicKeyToCertify)};
 
@@ -82,8 +86,6 @@ Basic API
         });
 
         // also, if loading a secret key from somewhere
-        // note how JWK determines automatically if it's a secret key
-        // or public key. XXX should this be more explicit?
         var otherSecretKey = jwcrypto.loadSecretKey(storedSecretKey);
 
         // verify it
