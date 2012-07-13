@@ -67,14 +67,10 @@ Basic API
         // serialize the public key
         console.log(keypair.publicKey.toString());
 
-        // serialize the public key to a version of the data format
-        console.log(keypair.publicKey.toString({version: '2012.08.15'}));
-
         // just the JSON object to embed in another structure
         console.log(JSON.stringify({stuff: keypair.publicKey.toJSONObject()}));
 
         // create and sign a JWS
-        // notice how loading the pubkey doesn't require a version, that is auto-detected
         var payload = {principal: {email: 'some@dude.domain'},
                        pubkey: jwcrypto.loadPublicKey(publicKeyToCertify)};
 
@@ -108,7 +104,7 @@ Sometimes the JSON object to sign should be a standard assertion with pre-define
 
     // add special fields which will be encoded properly
     // payload cannot contain reserved fields
-    assertion.sign(payload, {issuer: "foo.com", expiresAt: new Date(),
+    assertion.sign(payload, {issuer: "foo.com", expiresAt: new Date(new Date().valueOf() + 5000),
                              issuedAt: new Date(), audience: "https://example.com"},
                       keypair.secretKey,
                       function(err, signedAssertion) {
@@ -134,8 +130,10 @@ Sometimes the JSON objects to sign are certificates
 
     var keyToCertify = keypairToCertify.publicKey;
     var principal = {email: "someone@example.com"};
+
     var assertionParams = {issuer: "foo.com", issuedAt: new Date(),
                            expiresAt: new Date()};
+
     var additionalPayload = {};
 
     // payload cannot contain reserved fields
@@ -179,3 +177,12 @@ Sometimes the JSON objects to sign are certificates
        // certParamsArray is the array of individual cert params from each verification
        // payload is the assertion payload, and assertionParams is the assertion params.
     });
+
+Versioning
+====
+
+The formats of public-keys, as well as the special payload parameters of assertions and certificates, will be versioned.
+
+Not indicating a version number in the serialized payload indicates
+the alpha format in the BrowserID specification from June
+2012. Otherwise, a version number is required. The BrowserID Beta version number is <tt>2012.08.15</tt>.
