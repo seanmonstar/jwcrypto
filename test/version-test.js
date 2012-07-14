@@ -14,7 +14,7 @@ var suite = vows.describe('Versioning tests');
 suite.addBatch({
   "read default data format version": {
     topic: function() {
-      return jwcrypto.DATA_FORMAT_VERSION;
+      return jwcrypto.getDataFormatVersion();
     },
     "return what we expect": function(version) {
       assert.equal(version, '2012.08.15');
@@ -26,7 +26,7 @@ suite.addBatch({
   "data format version set to empty string to indicate first version": {
     topic: function() {
       jwcrypto.setDataFormatVersion('');
-      return jwcrypto.DATA_FORMAT_VERSION;
+      return jwcrypto.getDataFormatVersion();
     },
     "is reflected appropriately": function(version) {
       assert.equal(version, '');
