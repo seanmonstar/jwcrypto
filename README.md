@@ -203,6 +203,6 @@ or, to use the pre-versioning format:
 
      jwcrypto.setDataFormatVersion('');
 
-or, to go back to the latest default:
+or, to go back to the library default:
 
      jwcrypto.setDataFormatVersion();
